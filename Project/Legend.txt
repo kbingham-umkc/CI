@@ -1,0 +1,22 @@
+YearP1 - The next year
+YearP1W% - The next years win percentage
+Year - Year of this data
+Symbol - 3 character ID to represent the team.
+TM - The Name of the team.
+LG - League
+G - # of Games played
+W - Wins
+L - Losses
+Ties - Ties 
+W-L% - The win loss percent
+pythW-L% - Pythagorean win loss percentage.
+Finish - For career totals these are the average of all years weighted by the number games played or managed.
+GB Games back of division
+Playoffs - The farthest the team went into the post season
+R - Runs scored allowed
+RA - Runs Allowed
+BatAge - Average age of the batters  Weighted by games played
+PAge - Average age of the pitchers   Weighted
+#P - Number of players used in a game
+Top Player - obvioius
+Managers - Obvious.
