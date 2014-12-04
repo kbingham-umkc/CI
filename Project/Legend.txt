@@ -20,3 +20,5 @@ PAge - Average age of the pitchers   Weighted
 #P - Number of players used in a game
 Top Player - obvioius
 Managers - Obvious.
+ttlsalary - The total salary from the team.  As provided by the lehman files
+avgsalary - The average salary of the team, as provided by the lehman files.
