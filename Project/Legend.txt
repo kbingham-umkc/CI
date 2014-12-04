@@ -22,3 +22,8 @@ Top Player - obvioius
 Managers - Obvious.
 ttlsalary - The total salary from the team.  As provided by the lehman files
 avgsalary - The average salary of the team, as provided by the lehman files.
+YPN2 - Win Loss percent from 2 years prior
+YPN3 - Win Loss percent from 3 years prior
+YPN4 - Win Loss percent from 4 years prior
+YPN5 - Win Loss percent from 5 years prior
+YPN6 - Win Loss percent from 6 years prior
