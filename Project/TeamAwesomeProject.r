@@ -1,7 +1,7 @@
 
 
 #Load the CSV
-mlbdata = read.csv("mlbdata.csv", sep=",")
+mlbdata = read.csv("mlbdata2.csv", header=TRUE, sep=",")
 fix(mlbdata)
 
 
@@ -17,3 +17,4 @@ regfit.full = regsubsets(newMLBData, newMLBData$YearP1W)
 summary(regfit.full)
 
 
+fix(newMLBData)
