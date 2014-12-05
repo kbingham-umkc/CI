@@ -12,7 +12,7 @@ library(leaps)
 newMLBData = na.omit(mlbdata)
 attach(newMLBData)
 
-regfit.full = regsubsets(newMLBData$YearP1W., newMLBData)
+regfit.full = regsubsets(newMLBData, newMLBData$YearP1W)
 
 summary(regfit.full)
 
