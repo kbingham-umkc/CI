@@ -1,7 +1,7 @@
 
 
 #Load the CSV
-mlbdata = read.csv("mlbdata3.csv", header=TRUE, sep=",")
+mlbdata = read.csv("mlbdata2.csv", header=TRUE, sep=",")
 fix(mlbdata)
 
 
