@@ -1,7 +1,7 @@
 
 
 #Load the CSV
-mlbdata = read.csv("mlbdata2.csv", header=TRUE, sep=",")
+mlbdata = read.csv("mlbdata3.csv", header=TRUE, sep=",", nrows=5000)
 fix(mlbdata)
 
 
@@ -12,11 +12,17 @@ library(leaps)
 newMLBData = na.omit(mlbdata)
 attach(newMLBData)
 
-regfit.full = regsubsets(newMLBData$YearP1W~., newMLBData, nvmax=20)
+regfit.full = regsubsets(newMLBData$YearP1W~., newMLBData, nvmax=20, really.big=T)
 
-summary(regfit.full)
+regfit.summary = summary(regfit.full)
 
+plot(regfit.summary$adjr2, xlab="Number of Variables", ylab="Adjusted RSq", type="l")
+plot(regfit.summary$cp, xlab="Number of Variables", ylab="Adjusted cp", type="l")
+plot(regfit.summary$bic, xlab="Number of Variables", ylab="Adjusted bic", type="l")
 
+which.max(regfit.summary$adjr2)
+which.min(regfit.summary$cp)
+which.min(regfit.summary$bic)
 #fix(newMLBData)
 
 
