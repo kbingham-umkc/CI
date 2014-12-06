@@ -1,7 +1,7 @@
 
 
 #Load the CSV
-mlbdata = read.csv("mlbdata3.csv", header=TRUE, sep=",", nrows=5000)
+mlbdata = read.csv("mlbdata5.csv", header=TRUE, sep=",", nrows=5000)
 fix(mlbdata)
 
 
@@ -12,7 +12,7 @@ library(leaps)
 newMLBData = na.omit(mlbdata)
 attach(newMLBData)
 
-regfit.full = regsubsets(newMLBData$YearP1W~., newMLBData, nvmax=20, really.big=T)
+regfit.full = regsubsets(newMLBData$YearP1W~., newMLBData, nvmax=30, really.big=T)
 
 regfit.summary = summary(regfit.full)
 
