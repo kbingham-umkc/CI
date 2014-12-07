@@ -1,7 +1,7 @@
 
 
 #Load the CSV
-mlbdata = read.csv("mlbdata3.csv", header=TRUE, sep=",", nrows=5000)
+mlbdata = read.csv("mlbdata_r.csv", header=TRUE, sep=",", nrows=5000)
 #fix(mlbdata)
 
 
@@ -10,6 +10,7 @@ library(leaps)
 
 
 newMLBData = na.omit(mlbdata)
+mlbdata=newMLBData
 attach(newMLBData)
 
 #Now let's do a training set  Gives us a training set of 2/3rds
@@ -19,9 +20,9 @@ train = onetwothree != 1
 test=(!train)
 
 
-regfit.full = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, really.big=T)
-regfit.fwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, really.big=T, method="forward")
-regfit.bwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, really.big=T, method="backward")
+regfit.full = regsubsets(YearP1W~., newMLBData[train,], nvmax=25)
+regfit.fwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, method="forward")
+regfit.bwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, method="backward")
 
 regfit.summary = summary(regfit.full)
 
@@ -52,3 +53,4 @@ print(which.min(val.errors))
 
 print(coef(regfit.full, 13))
 print(coef(regfit.full, 5))
+regfit.summary
