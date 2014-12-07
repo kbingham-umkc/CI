@@ -1,8 +1,8 @@
 
 
 #Load the CSV
-mlbdata = read.csv("mlbdata5.csv", header=TRUE, sep=",", nrows=5000)
-fix(mlbdata)
+mlbdata = read.csv("mlbdata3.csv", header=TRUE, sep=",", nrows=5000)
+#fix(mlbdata)
 
 
 #Load leaps so we limit the # of dimensions.
@@ -12,7 +12,16 @@ library(leaps)
 newMLBData = na.omit(mlbdata)
 attach(newMLBData)
 
-regfit.full = regsubsets(newMLBData$YearP1W~., newMLBData, nvmax=30, really.big=T)
+#Now let's do a training set  Gives us a training set of 2/3rds
+set.seed(1)
+onetwothree = sample(c(1, 2, 3), nrow(newMLBData), rep=TRUE)
+train = onetwothree != 1
+test=(!train)
+
+
+regfit.full = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, really.big=T)
+regfit.fwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, really.big=T, method="forward")
+regfit.bwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, really.big=T, method="backward")
 
 regfit.summary = summary(regfit.full)
 
@@ -25,12 +34,21 @@ which.min(regfit.summary$cp)
 which.min(regfit.summary$bic)
 #fix(newMLBData)
 
+#Get a best fit
+#regfit.best = regsubsets(YearP1W~., data=newMLBData[train,], nvmax=30, really.big=T)
+regfit.best = regfit.full
 
-#predwl = as.numeric(newMLBData$YearP1W)
-#lg = as.factor(as.character(newMLBData$Lg))
-#g = as.numeric(newMLBData$G)
-#w = as.numeric(newMLBData$W)
-#l = as.numeric(newMLBData$L)
+regfit.test = model.matrix(YearP1W~., data=newMLBData[test,])
 
-#df = data.frame(predwl, lg, g, l)
-#rdf =  regsubsets(df[,c(2:4)], predwl)
+#Get the MSE Errors
+val.errors = rep(NA, 30)
+for (i in 1:30){
+  coefi = coef(regfit.best,id=i)
+  pred=regfit.test[,names(coefi)]%*%coefi
+  val.errors[i]=mean((newMLBData$YearP1W[test]-pred)^2)
+}
+print(which.min(val.errors))
+
+
+print(coef(regfit.full, 13))
+print(coef(regfit.full, 5))
