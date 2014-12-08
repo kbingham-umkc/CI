@@ -10,7 +10,6 @@ library(leaps)
 
 
 newMLBData = na.omit(mlbdata)
-mlbdata=newMLBData
 attach(newMLBData)
 
 #Now let's do a training set  Gives us a training set of 2/3rds
@@ -51,6 +50,3 @@ for (i in 1:30){
 print(which.min(val.errors))
 
 
-print(coef(regfit.full, 13))
-print(coef(regfit.full, 5))
-regfit.summary
