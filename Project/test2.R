@@ -42,6 +42,8 @@ MLB.lassomod = glmnet(MLB.trainX, MLB.trainY, alpha=1)
 MLB.lasso.cv = cv.glmnet(MLB.trainX, MLB.trainY, alpha=1)
 MLB.lasso.pred = predict(MLB.lassomod, s=MLB.lasso.cv$lambda.min, newx=MLB.testX)
 MLB.lasso.mean = mean(( MLB.lasso.pred - MLB.testY)^2)
+MLB.lasso.coef=predict(MLB.lassomod, type="coefficients", s=MLB.lasso.cv$lambda.min)
+MLB.lasso.coef[MLB.lasso.coef!=0]
 
 #PLS
 library(pls)

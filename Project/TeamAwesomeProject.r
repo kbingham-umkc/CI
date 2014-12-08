@@ -40,19 +40,49 @@ regfit.best = regfit.full
 
 regfit.test = model.matrix(YearP1W~., data=newMLBData[test,])
 
-#Get the MSE Errors
-val.errors = rep(NA, 30)
-for (i in 1:30){
+#Get the MSE Errors for best fit
+val.errors = rep(NA, 25)
+for (i in 1:25){
   coefi = coef(regfit.best,id=i)
   pred=regfit.test[,names(coefi)]%*%coefi
   val.errors[i]=mean((newMLBData$YearP1W[test]-pred)^2)
 }
 print(which.min(val.errors))
+print(min(val.errors))
 
 coef(regfit.full, id=which.max(regfit.summary$adjr2))
 coef(regfit.full, id=which.min(regfit.summary$cp))
 coef(regfit.full, id=which.min(regfit.summary$bic))
 coef(regfit.full, id=which.min(val.errors))
+
+########### FWD SUBSET #################
+#Get the MSE Errors for best fwd
+val.errors = rep(NA, 25)
+for (i in 1:25){
+  coefi = coef(regfit.fwd,id=i)
+  pred=regfit.test[,names(coefi)]%*%coefi
+  val.errors[i]=mean((newMLBData$YearP1W[test]-pred)^2)
+}
+print("Forward")
+print(which.min(val.errors))
+print(min(val.errors))
+
+coef(regfit.full, id=which.min(val.errors))
+
+########### Backward SUBSET #################
+#Get the MSE Errors for best BWD
+val.errors = rep(NA, 25)
+for (i in 1:25){
+  coefi = coef(regfit.bwd,id=i)
+  pred=regfit.test[,names(coefi)]%*%coefi
+  val.errors[i]=mean((newMLBData$YearP1W[test]-pred)^2)
+}
+print("Backward")
+print(which.min(val.errors))
+print(min(val.errors))
+
+coef(regfit.full, id=which.min(val.errors))
+
 
 ############ LASSO ############ 
 library(glmnet)
@@ -75,3 +105,17 @@ for(j in 1:k){
 }
 
 print(mean(avgVector))
+
+#Get the last lasso and get the coefficients.
+MLB.lasso.coef = predict(MLB.lasso.cv, type="coefficients", MLB.lasso.cv$lambda.min)
+MLB.lasso.coef
+
+
+#Do a linear fit with batting age up to 3 polynnomioal.
+#MLB.throwfit = lm(YearP1W~poly(BatAge, 3)+X.P+YPN6+hr+BPF+PPF, data=newMLBData, subset=train)
+#MLB.throwfit = lm(YearP1W~poly(BatAge, 2)+X.P+YPN6+hr+BPF+PPF, data=newMLBData, subset=train)
+MLB.throwfit = lm(YearP1W~I(BatAge ^ 2)+X.P+YPN6+hr+BPF+PPF, data=newMLBData, subset=train)
+summary(MLB.throwfit)  # Signifigance seems to be overstated here.
+MLB.throwfitpred = predict(MLB.throwfit, newMLBData[test,])
+print(mean(MLB.throwfitpred-newMLBData$YearP1W[test])^2)  #WOW look at that mean.
+
