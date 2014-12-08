@@ -53,3 +53,25 @@ coef(regfit.full, id=which.max(regfit.summary$adjr2))
 coef(regfit.full, id=which.min(regfit.summary$cp))
 coef(regfit.full, id=which.min(regfit.summary$bic))
 coef(regfit.full, id=which.min(val.errors))
+
+############ LASSO ############ 
+library(glmnet)
+k = 10
+set.seed(1)
+folds = sample(1:k,nrow(newMLBData),replace=TRUE)
+
+avgVector = c()
+MLB.X = as.matrix(newMLBData[,-42])
+MLB.Y = newMLBData$YearP1W
+
+for(j in 1:k){
+	MLB.lasso.cv = cv.glmnet(MLB.X[folds!=j,],MLB.Y[folds!=j],alpha=1)
+	minLambda = MLB.lasso.cv$lambda.min
+
+	lasso.mod = glmnet(MLB.X[folds!=j,],MLB.Y[folds!=j],alpha=1,lambda=minLambda)
+	MLB.lasso.pred = predict(lasso.mod,MLB.X[folds==j,],s=minLambda)
+	mse = mean((MLB.Y[folds==j] - MLB.lasso.pred)^2)
+	avgVector = c(avgVector, mse)
+}
+
+print(mean(avgVector))
