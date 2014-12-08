@@ -50,6 +50,6 @@ for (i in 1:30){
 print(which.min(val.errors))
 
 coef(regfit.full, id=which.max(regfit.summary$adjr2))
-coef(regfit.full, id=which.max(regfit.summary$cp))
-coef(regfit.full, id=which.max(regfit.summary$bic))
+coef(regfit.full, id=which.min(regfit.summary$cp))
+coef(regfit.full, id=which.min(regfit.summary$bic))
 coef(regfit.full, id=which.min(val.errors))
