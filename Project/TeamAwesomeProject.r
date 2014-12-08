@@ -49,4 +49,4 @@ for (i in 1:30){
 }
 print(which.min(val.errors))
 
-
+coef(regfit.full, id=which.max(regfit.summary$adjr2))
