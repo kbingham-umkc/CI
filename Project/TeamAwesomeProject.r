@@ -22,6 +22,8 @@ test=(!train)
 regfit.full = regsubsets(YearP1W~., newMLBData[train,], nvmax=25)
 regfit.fwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, method="forward")
 regfit.bwd = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, method="backward")
+regfit.seqrep = regsubsets(YearP1W~., newMLBData[train,], nvmax=30, method="seqrep")
+
 
 regfit.summary = summary(regfit.full)
 
@@ -67,7 +69,7 @@ print("Forward")
 print(which.min(val.errors))
 print(min(val.errors))
 
-coef(regfit.full, id=which.min(val.errors))
+coef(regfit.fwd, id=which.min(val.errors))
 
 ########### Backward SUBSET #################
 #Get the MSE Errors for best BWD
@@ -81,7 +83,22 @@ print("Backward")
 print(which.min(val.errors))
 print(min(val.errors))
 
-coef(regfit.full, id=which.min(val.errors))
+coef(regfit.bwd, id=which.min(val.errors))
+
+
+########### Sequential Replacement SUBSET #################
+#Get the MSE Errors for best Sequential replacement
+val.errors = rep(NA, 25)
+for (i in 1:25){
+  coefi = coef(regfit.seqrep,id=i)
+  pred=regfit.test[,names(coefi)]%*%coefi
+  val.errors[i]=mean((newMLBData$YearP1W[test]-pred)^2)
+}
+print("sequential replacement")
+print(which.min(val.errors))
+print(min(val.errors))
+
+coef(regfit.seqrep, id=which.min(val.errors))
 
 
 ############ LASSO ############ 
