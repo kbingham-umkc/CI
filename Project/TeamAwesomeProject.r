@@ -143,3 +143,7 @@ MLB.throwfitpred = predict(MLB.throwfit, newMLBData[test,])
 #Extra doing a batage ^ 2 gives a really good mean with teh coefficients from backwards.
 print(mean(MLB.throwfitpred-newMLBData$YearP1W[test])^2)  #WOW look at that mean.
 
+MLB.agefit = lm(YearP1W~I(BatAge ^ 3), data=newMLBData, subset=train)
+summary(MLB.agefit)
+plot(MLB.agefit)
+
